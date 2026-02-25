@@ -1,19 +1,19 @@
-import type { TCanvasPoint, TCanvasRect, TCanvasSize, TGridSize, TPoint } from '../types/types';
+import type { TCanvasPoint, TCanvasRect, TSize, TPoint } from '../types/types';
 
 export class CoordinateMapper {
-  private gridSize: TGridSize;
-  private canvasSize: TCanvasSize;
+  private gridSize: TSize;
+  private canvasSize: TSize;
 
-  constructor(gridSize: TGridSize, canvasSize: TCanvasSize) {
+  constructor(gridSize: TSize, canvasSize: TSize) {
     this.gridSize = gridSize;
     this.canvasSize = canvasSize;
   }
 
-  setGridSize(size: TGridSize): void {
+  setGridSize(size: TSize): void {
     this.gridSize = size;
   }
 
-  setCanvasSize(size: TCanvasSize): void {
+  setCanvasSize(size: TSize): void {
     this.canvasSize = size;
   }
 

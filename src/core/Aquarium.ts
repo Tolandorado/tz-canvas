@@ -1,11 +1,11 @@
 import { Grid } from './Grid';
-import { ECellType, ETool, type TGridSize, type TPoint } from '../types/types';
+import { ECellType, ETool, type TSize, type TPoint } from '../types/types';
 
 export class Aquarium {
   private readonly grid: Grid;
   private waterLevelPercent: number;
 
-  constructor(size: TGridSize) {
+  constructor(size: TSize) {
     this.grid = new Grid(size);
     this.waterLevelPercent = 0;
   }
@@ -54,7 +54,6 @@ export class Aquarium {
   recalculateWater(): void {
     const { height } = this.grid.getSize();
 
-    // Сначала очищаем всю воду
     this.grid.forEach((cell, position) => {
       if (cell.type === ECellType.Water) {
         this.grid.setCell(position, ECellType.Air);
@@ -70,8 +69,6 @@ export class Aquarium {
       return;
     }
 
-    // Простейная модель: вода заполняет доступные "воздушные" ячейки снизу вверх,
-    // уважая препятствия из песка (не проходит сквозь них).
     const { width } = this.grid.getSize();
 
     for (let x = 0; x < width; x += 1) {
@@ -84,7 +81,6 @@ export class Aquarium {
         if (!cell) continue;
 
         if (cell.type === ECellType.Sand) {
-          // Песок блокирует столбец выше, воду сюда и выше не льем.
           break;
         }
 

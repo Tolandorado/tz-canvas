@@ -14,7 +14,7 @@ export type TPoint = {
   y: number;
 };
 
-export type TGridSize = {
+export type TSize = {
   width: number;
   height: number;
 };
@@ -35,8 +35,9 @@ export type TCanvasRect = {
   height: number;
 };
 
-export type TCanvasSize = {
-  width: number;
-  height: number;
+export type TColors = {
+  air: string;
+  sand: string;
+  water: string;
+  grid: string;
 };
-

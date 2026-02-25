@@ -1,11 +1,11 @@
-import type { TCell, ECellType, TPoint, TGridSize } from '../types/types';
+import type { TCell, ECellType, TPoint, TSize } from '../types/types';
 
 export class Grid {
   private readonly width: number;
   private readonly height: number;
   private readonly cells: TCell[][];
 
-  constructor(size: TGridSize) {
+  constructor(size: TSize) {
     this.width = size.width;
     this.height = size.height;
     this.cells = this.createEmptyCells();
@@ -42,7 +42,7 @@ export class Grid {
     );
   }
 
-  getSize(): TGridSize {
+  getSize(): TSize {
     return { width: this.width, height: this.height };
   }
 
