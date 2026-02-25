@@ -1,0 +1,8 @@
+.control {
+    display: flex;
+
+    &_span {
+        display: inline-block;
+        width: 160px;
+    }
+}

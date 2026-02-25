@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useRef, useState } from 'react';
+import type { TSize } from './types/types';
+import { Aquarium } from './core/Aquarium';
+import { SetupForm } from './components/SetupForm/SetupForm';
+import { WaterControls } from './components/WaterControls/WaterControls';
+import './index.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [gridSize, setGridSize] = useState<TSize | null>(null);
+  const aquariumRef = useRef<Aquarium | null>(null);
+
+  const handleCreateGrid = (size: TSize) => {
+    aquariumRef.current = new Aquarium(size);
+    setGridSize(size);
+  };
+
+  const handleWaterChanged = () => {
+    // TODO
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app">
+      <h1 className="app_title">Aquarium Canvas</h1>
+
+      <SetupForm onCreate={handleCreateGrid} />
+
+      {!gridSize && <p>Укажите размеры сетки и нажмите «Создать», чтобы начать.</p>}
+
+      {gridSize && (
+        <div className="app_content">
+          <p>
+            Сетка создана: {gridSize.width} × {gridSize.height}
+          </p>
+
+          <WaterControls aquarium={aquariumRef.current} onChange={handleWaterChanged} />
+
+          {/* TODO canvas */}
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
