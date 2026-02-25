@@ -23,5 +23,20 @@ export type TCell = {
   type: ECellType;
 };
 
+export type TCanvasPoint = {
+  x: number;
+  y: number;
+};
 
+export type TCanvasRect = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
+export type TCanvasSize = {
+  width: number;
+  height: number;
+};
 
