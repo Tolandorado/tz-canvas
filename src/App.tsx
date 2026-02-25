@@ -3,19 +3,22 @@ import type { TSize } from './types/types';
 import { Aquarium } from './core/Aquarium';
 import { SetupForm } from './components/SetupForm/SetupForm';
 import { WaterControls } from './components/WaterControls/WaterControls';
+import { AquariumCanvas } from './components/AquariumCanvas/AquariumCanvas';
 import './index.css';
 
 function App() {
   const [gridSize, setGridSize] = useState<TSize | null>(null);
+  const [renderVersion, setRenderVersion] = useState(0);
   const aquariumRef = useRef<Aquarium | null>(null);
 
   const handleCreateGrid = (size: TSize) => {
     aquariumRef.current = new Aquarium(size);
     setGridSize(size);
+    setRenderVersion((version) => version + 1);
   };
 
   const handleWaterChanged = () => {
-    // TODO
+    setRenderVersion((version) => version + 1);
   };
 
   return (
@@ -34,7 +37,11 @@ function App() {
 
           <WaterControls aquarium={aquariumRef.current} onChange={handleWaterChanged} />
 
-          {/* TODO canvas */}
+          <AquariumCanvas
+            aquarium={aquariumRef.current}
+            gridSize={gridSize}
+            renderVersion={renderVersion}
+          />
         </div>
       )}
     </div>
