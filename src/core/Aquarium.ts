@@ -52,7 +52,7 @@ export class Aquarium {
   }
 
   recalculateWater(): void {
-    const { height } = this.grid.getSize();
+    const { width, height } = this.grid.getSize();
 
     this.grid.forEach((cell, position) => {
       if (cell.type === ECellType.Water) {
@@ -64,29 +64,42 @@ export class Aquarium {
       return;
     }
 
-    const maxWaterRows = Math.floor((height * this.waterLevelPercent) / 100);
-    if (maxWaterRows <= 0) {
+    const maxWaterHeight = Math.floor((height * this.waterLevelPercent) / 100);
+    if (maxWaterHeight <= 0) {
       return;
     }
+    const waterMinY = height - maxWaterHeight;
 
-    const { width } = this.grid.getSize();
-
-    for (let x = 0; x < width; x += 1) {
-      let remainingInColumn = maxWaterRows;
-
-      for (let y = height - 1; y >= 0 && remainingInColumn > 0; y -= 1) {
-        const position = { x, y };
-        const cell = this.grid.getCell(position);
-
-        if (!cell) continue;
-
-        if (cell.type === ECellType.Sand) {
-          break;
+    for (let y = height - 1; y >= waterMinY; y--) {
+      const sandIndices: number[] = [];
+      for (let x = 0; x < width; x++) {
+        if (this.grid.getCell({ x, y })?.type === ECellType.Sand) {
+          sandIndices.push(x);
         }
+      }
 
-        if (cell.type === ECellType.Air) {
-          this.grid.setCell(position, ECellType.Water);
-          remainingInColumn -= 1;
+      if (sandIndices.length < 2) {
+        continue;
+      }
+
+      for (let i = 0; i < sandIndices.length - 1; i++) {
+        const leftWallX = sandIndices[i];
+        const rightWallX = sandIndices[i + 1];
+
+        for (let x = leftWallX + 1; x < rightWallX; x++) {
+          const position = { x, y };
+          const cell = this.grid.getCell(position);
+
+          if (cell?.type !== ECellType.Air) {
+            continue;
+          }
+
+          const cellBelow = this.grid.getCell({ x, y: y + 1 });
+          const isSupported = y === height - 1 || (cellBelow && cellBelow.type !== ECellType.Air);
+
+          if (isSupported) {
+            this.grid.setCell(position, ECellType.Water);
+          }
         }
       }
     }
